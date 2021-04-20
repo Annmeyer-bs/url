@@ -26,24 +26,7 @@ services: #Раздел, в котором будут описаны серви�
       PMA_HOST: *db-service
       MYSQL_ROOT_PASSWORD: *MYSQL_ROOT_PASS
       UPLOAD_LIMIT: "1G"
-  &php74-fpm project-url-php74-fpm:
-    container_name: *php74-fpm
-    hostname: *php74-fpm 
-    command: php-fpm
-    entrypoint: /entrypoint.sh
-    restart: always
-    image: ${REGISTRY_HOST}/${REGISTRY_PATH}/${PHP74_CONTAINER}:latest
-    # build:
-    #   ./docker/php74
-    environment:
-      FPM_PORT: &PHP74_PORT 9000
-      FPM_USER: "${CURRENT_USER_ID}"
-      FPM_GROUP: "${CURRENT_USER_ID}"
-      CURRENT_USER: "${CURRENT_USER}"
-      SCHEDULE_PERIOD: 60
-    volumes:
-      - ./www:/var/www/html:rw
-  &php-apache  test-php-apache: #В docker-compose через &-переменная записываем название контейнера. Название контейнера
+  &php-apache  url-php-apache: #В docker-compose через &-переменная записываем название контейнера. Название контейнера
     container_name: *php-apache #Используем переменную названия этого контейнера
     hostname: *php-apache #Указываем для того чтоб в дальнейшем в коде или .env вместо динамического ip, указывать статической. Что б не менять везде ip контейнера
     ports:  # Организовуем перенаправление порта контейнера на порт компьютера.
