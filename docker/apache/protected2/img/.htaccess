@@ -1,0 +1,11 @@
+AuthType Basic
+AuthName "Protected!"
+AuthUserFile /etc/apache2/.htpasswd
+Require valid-user
+
+<FilesMatch "\.*$">
+   AuthType Basic
+   AuthName "Protected!"
+   AuthUserFile /etc/apache2/.htpasswd
+   Require valid-user
+</FilesMatch>

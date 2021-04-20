@@ -1,0 +1,23 @@
+version: "3.7" #Версия docker-compose
+
+services: #Раздел, в котором будут описаны сервисы. Сервисом может быть клиент, сервер, сервер баз данных...
+
+  &php-apache  test-php-apache: #В docker-compose через &-переменная записываем название контейнера. Название контейнера
+    container_name: *php-apache #Используем переменную названия этого контейнера
+    hostname: *php-apache #Указываем для того чтоб в дальнейшем в коде или .env вместо динамического ip, указывать статической. Что б не менять везде ip контейнера
+    ports:  # Организовуем перенаправление порта контейнера на порт компьютера.
+      - ${APACHE_CONTAINER_PORT}:80   # При его использовании применяется следующая конструкция: [порт компьютера]:[порт контейнера]
+    restart: always
+    volumes: # Определяют, что данные из временной структуры — контейнера будут сохраняться на хост машине.
+      - ./site1:/var/www/site1:rw
+      - ./site2:/var/www/work:rw
+      - ./protected:/var/www/protected:rw
+      - ./protected2:/var/www/protected2:rw
+      - ./docker/apache/sites-enabled:/etc/apache2/sites-enabled:ro
+      - ./.htpasswd:/etc/apache2/.htpasswd:ro
+    build: #Задаёт путь к файлу Dockerfile, который нужно использовать для создания образа.
+      ./docker/apache
+    networks:
+      - web
+networks:
+  web: 
