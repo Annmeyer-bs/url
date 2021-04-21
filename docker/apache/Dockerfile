@@ -1,16 +1,17 @@
 FROM php:7.4-apache 
 #Задаёт образ.
 #RUN выполняет команду и создаёт слой образа. Используется для установки в контейнер пакетов.
-RUN a2enmod rewrite 
-#Подключение модулей
-RUN a2enmod headers
-RUN a2enmod expires
+# RUN a2enmod rewrite 
+# #Подключение модулей
+# RUN a2enmod headers
+# RUN a2enmod expires
 
-RUN service apache2 restart
+# RUN service apache2 restart
 #перезапусr Apache
+RUN groupadd --gid=1000 dev && useradd -u 1000 -N -G www-data --gid=1000 -s /bin/bash -m dev
 
-# RUN mkdir /var/www/work
-# RUN chown www-data:www-data /var/www/work
+RUN mkdir /var/www/public
+RUN chown www-data:www-data /var/www/public
 
 # RUN mkdir /var/www/site1
 # RUN chown www-data:www-data /var/www/site1
@@ -21,7 +22,6 @@ RUN service apache2 restart
 # RUN mkdir /var/www/protected2
 # RUN chown www-data:www-data /var/www/protected2
 
-# RUN groupadd --gid=1000 dev && useradd -u 1000 -N -G www-data --gid=1000 -s /bin/bash -m dev
 #Это необходимо из-за того, что некоторые функции отказываются запускаться от имени пользователя root. Кроме того, полезно не запускать функции от имени пользователя root, даже в контейнере.
 
 #LABEL — описывает метаданные. Например — сведения о том, кто создал и поддерживает образ.
